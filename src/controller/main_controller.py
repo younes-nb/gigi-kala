@@ -7,7 +7,11 @@ from src.controller.add_tree_controller import AddTreeController
 from src.controller.search_controller import SearchController
 from src.controller.tree_controller import TreeController
 from src.view.main_window import MainWindow
+from src.model.tree import Tree, Pos, nearest
 
+r = 'right'
+l = 'left'
+p = 'parent'
 
 class MainController(MainWindow):
     def __init__(self):
@@ -18,6 +22,10 @@ class MainController(MainWindow):
         self.tree = TreeController()
         self.setCentralWidget(self.tree)
         self.init_menu()
+        self.history = []
+        self.root = None
+        self.t = None
+        self.target = None
 
     def init_menu(self):
         self.add_tree.triggered.connect(self.init_add_tree)
@@ -52,14 +60,60 @@ class MainController(MainWindow):
             if not type(event) == bool:
                 event.ignore()
 
+    def add(self, tree: Tree, node: Pos):
+        tree.insert(node)
+        self.history.append(node)
+
+    def delete(self, node: Pos):
+        if self.is_root(node):
+            tree2 = Tree(self.history[0])
+            self.history.pop(0)
+        else:
+            node = self.search(node)
+            self.history.remove(node)
+            tree2 = Tree(self.root)
+        for i in self.history:
+            tree2.insert(i)
+        return tree2
+
+    def search(self, node: Pos):
+        if node is not None:
+            for i in self.history:
+                if i.x == node.data.x and i.y == node.data.y and i.z == node.data.z:
+                    return i
+
+    def is_root(self, node):
+        if self.root.x == node.data.x and self.root.y == node.data.y and self.root.z == node.data.z:
+            return True
+
+    def get_object(self, tree: Tree, node: Pos):
+        if tree is None:
+            return
+        if node.x == tree.data.x and node.y == tree.data.y and node.z == tree.data.z:
+            self.target = tree
+        self.get_object(tree.left, node)
+        self.get_object(tree.right, node)
+
     def add_tree_func(self, x, y, z):
-        pass
+        self.root = Pos(x, y, z)
+        self.history = []
+        self.t = Tree(self.root)
+        # TODO:
+        self.t.display()
 
     def add_repair_shop_func(self, x, y, z):
-        pass
+        self.add(self.t, Pos(x, y, z))
+        # TODO:
+        self.t.display()
 
     def search_func(self, x, y, z):
-        pass
+        result = nearest(self.t, Pos(x, y, z))
+        # TODO:
+        print(result)
 
     def remove_func(self, x, y, z):
-        pass
+        self.target = None
+        self.get_object(self.t, Pos(x, y, z))
+        self.t = self.delete(self.target)
+        self.target = None
+        # TODO:

@@ -13,5 +13,5 @@ class SearchController(SearchView):
         x = int(self.inputs_view.input_x.value())
         y = int(self.inputs_view.input_y.value())
         z = int(self.inputs_view.input_z.value())
-        # Do Something
+        self.main_controller.search_func(x, y, z)
         self.close()

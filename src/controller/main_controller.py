@@ -35,23 +35,31 @@ class MainController(MainWindow):
         self.search_controller.show()
 
     def closeEvent(self, event):
-        try:
-            reply = QMessageBox.question(self, 'Quit?',
-                                         'Are you sure you want to quit?',
-                                         QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-                                         QMessageBox.StandardButton.No)
+        reply = QMessageBox.question(self, 'Quit?',
+                                     'Are you sure you want to quit?',
+                                     QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                                     QMessageBox.StandardButton.No)
 
-            if reply == QMessageBox.StandardButton.Yes:
-                self.add_tree_controller.close()
-                self.add_repair_shop_controller.close()
-                self.search_controller.close()
-                if not type(event) == bool:
-                    event.accept()
-                else:
-                    sys.exit()
+        if reply == QMessageBox.StandardButton.Yes:
+            self.add_tree_controller.close()
+            self.add_repair_shop_controller.close()
+            self.search_controller.close()
+            if not type(event) == bool:
+                event.accept()
             else:
-                if not type(event) == bool:
-                    event.ignore()
+                sys.exit()
+        else:
+            if not type(event) == bool:
+                event.ignore()
 
-        except Exception as e:
-            print(e)
+    def add_tree_func(self, x, y, z):
+        pass
+
+    def add_repair_shop_func(self, x, y, z):
+        pass
+
+    def search_func(self, x, y, z):
+        pass
+
+    def remove_func(self, x, y, z):
+        pass

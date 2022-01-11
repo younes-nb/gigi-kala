@@ -8,7 +8,7 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.setFixedSize(1000, 700)
         self.setWindowTitle("Gigi Kala")
-        self.setWindowIcon(QIcon("../media/icons/tree_controller.png"))
+        self.setWindowIcon(QIcon("../media/icons/tree.png"))
 
         menu_bar = self.menuBar()
         options = menu_bar.addMenu("Options")

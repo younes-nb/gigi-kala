@@ -274,4 +274,4 @@ def nearest(tree: Tree, node: Pos):
     tree.clean(node)
     point = min(distances, key=distances.get)
     distance = distances[min(distances, key=distances.get)]
-    return ((point.x, point.y, point.z), distance)
+    return (point.x, point.y, point.z), distance

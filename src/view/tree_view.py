@@ -10,6 +10,7 @@ class TreeView(QWidget):
         super(TreeView, self).__init__()
         self.setFixedSize(1000, 700)
         self.lines = []
+        self.nodes = []
         if tree:
             cord_x = int(self.width() / 2)
             cord_y = 20
@@ -18,6 +19,7 @@ class TreeView(QWidget):
 
     def add_node(self, tree, cord_x, cord_y, r):
         node = NodeView(self, tree.data.x, tree.data.y, tree.data.z, cord_x, cord_y, r)
+        self.nodes.append(node)
         if tree.has("right"):
             x = node.x() + int(node.width() / 2)
             y = node.y() + node.height()

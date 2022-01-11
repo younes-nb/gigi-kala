@@ -1,3 +1,4 @@
+import copy
 import sys
 
 from PyQt6.QtWidgets import QMessageBox
@@ -6,12 +7,13 @@ from src.controller.add_repair_shop_controller import AddRepairShopController
 from src.controller.add_tree_controller import AddTreeController
 from src.controller.search_controller import SearchController
 from src.controller.tree_controller import TreeController
-from src.view.main_window import MainWindow
 from src.model.tree import Tree, Pos, nearest
+from src.view.main_window import MainWindow
 
 r = 'right'
 l = 'left'
 p = 'parent'
+
 
 class MainController(MainWindow):
     def __init__(self):
@@ -19,12 +21,12 @@ class MainController(MainWindow):
         self.add_tree_controller = AddTreeController(self)
         self.add_repair_shop_controller = AddRepairShopController(self)
         self.search_controller = SearchController(self)
-        self.tree = TreeController()
-        self.setCentralWidget(self.tree)
+        self.tree_controller = TreeController(None)
+        self.setCentralWidget(self.tree_controller)
         self.init_menu()
         self.history = []
         self.root = None
-        self.t = None
+        self.tree_model = None
         self.target = None
 
     def init_menu(self):
@@ -97,23 +99,25 @@ class MainController(MainWindow):
     def add_tree_func(self, x, y, z):
         self.root = Pos(x, y, z)
         self.history = []
-        self.t = Tree(self.root)
-        # TODO:
-        self.t.display()
+        self.tree_model = Tree(self.root)
+        tree = copy.deepcopy(self.tree_model)
+        self.tree_controller = TreeController(tree)
+        self.setCentralWidget(self.tree_controller)
 
     def add_repair_shop_func(self, x, y, z):
-        self.add(self.t, Pos(x, y, z))
-        # TODO:
-        self.t.display()
+        self.add(self.tree_model, Pos(x, y, z))
+        tree = copy.deepcopy(self.tree_model)
+        self.tree_controller = TreeController(tree)
+        self.setCentralWidget(self.tree_controller)
 
     def search_func(self, x, y, z):
-        result = nearest(self.t, Pos(x, y, z))
+        result = nearest(self.tree_model, Pos(x, y, z))
         # TODO:
         print(result)
 
     def remove_func(self, x, y, z):
         self.target = None
-        self.get_object(self.t, Pos(x, y, z))
-        self.t = self.delete(self.target)
+        self.get_object(self.tree_model, Pos(x, y, z))
+        self.tree_model = self.delete(self.target)
         self.target = None
         # TODO:

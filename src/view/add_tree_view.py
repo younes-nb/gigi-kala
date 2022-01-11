@@ -8,12 +8,12 @@ from src.view.inputs_view import InputsView
 class AddTreeView(QWidget):
     def __init__(self):
         super(AddTreeView, self).__init__()
-        self.setWindowIcon(QIcon("../Media/Icons/tree.png"))
+        self.setWindowIcon(QIcon("../media/icons/tree.png"))
         self.setWindowTitle("Add Tree")
         self.setFixedSize(340, 460)
         self.layout = QVBoxLayout(self)
 
-        tree_image = QPixmap("../Media/Images/tree.png")
+        tree_image = QPixmap("../media/images/tree.png")
         tree_label = QLabel()
         tree_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         tree_label.setPixmap(tree_image)

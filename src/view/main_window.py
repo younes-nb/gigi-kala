@@ -1,6 +1,5 @@
-from PyQt6.QtWidgets import QMainWindow
 from PyQt6.QtGui import QIcon, QAction
-from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QMainWindow
 
 
 class MainWindow(QMainWindow):
@@ -21,9 +20,9 @@ class MainWindow(QMainWindow):
         self.add_repair_shop.setShortcut("Ctrl+R")
         options.addAction(self.add_repair_shop)
 
-        self.search = QAction(QIcon("../media/icons/search.png"), "Search")
-        self.search.setShortcut("Ctrl+F")
-        options.addAction(self.search)
+        self.search_repair_shop = QAction(QIcon("../media/icons/search.png"), "Search")
+        self.search_repair_shop.setShortcut("Ctrl+F")
+        options.addAction(self.search_repair_shop)
 
         self.remove = QAction(QIcon("../media/icons/remove.png"), "Remove")
         self.remove.setShortcut("Delete")

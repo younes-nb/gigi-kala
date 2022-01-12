@@ -35,7 +35,7 @@ class MainController(MainWindow):
     def init_menu(self):
         self.add_tree.triggered.connect(self.init_add_tree)
         self.add_repair_shop.triggered.connect(self.init_add_repair_shop)
-        self.search.triggered.connect(self.init_search)
+        self.search_repair_shop.triggered.connect(self.init_search)
         self.remove.triggered.connect(self.init_remove)
         self.close_app.triggered.connect(self.closeEvent)
 
@@ -114,10 +114,25 @@ class MainController(MainWindow):
 
     def add_repair_shop_func(self, x, y, z):
         if self.tree_model:
-            self.add(self.tree_model, Pos(x, y, z))
-            tree = copy.deepcopy(self.tree_model)
-            self.tree_controller = TreeController(tree)
-            self.setCentralWidget(self.tree_controller)
+            exist = False
+            for node in self.tree_controller.nodes:
+                if node.pos_x == x and node.pos_y == y and node.pos_z == z:
+                    exist = True
+                    break
+            if exist:
+                resultBox = QMessageBox()
+                resultBox.setWindowTitle("Repair Shop Already Exist!")
+                resultBox.setWindowIcon(QIcon("../media/icons/tree.png"))
+                resultBox.setIcon(QMessageBox.Icon.Warning)
+                resultBox.setFont(QFont("Arial", 11))
+                resultBox.setText(
+                    "Can not add repair shop in same coordinates")
+                resultBox.exec()
+            else:
+                self.add(self.tree_model, Pos(x, y, z))
+                tree = copy.deepcopy(self.tree_model)
+                self.tree_controller = TreeController(tree)
+                self.setCentralWidget(self.tree_controller)
         else:
             resultBox = QMessageBox()
             resultBox.setWindowTitle("Can Not Add A Repair Shop Without A Tree!")
@@ -131,6 +146,8 @@ class MainController(MainWindow):
     def search_func(self, x, y, z):
         if self.tree_model:
             result = nearest(self.tree_model, Pos(x, y, z))
+            self.tree_controller = TreeController(self.tree_model)
+            self.setCentralWidget(self.tree_controller)
             for node in self.tree_controller.nodes:
                 if node.pos_x == result[0][0] and node.pos_y == result[0][1] and node.pos_z == result[0][2]:
                     node.setStyleSheet("""
@@ -162,41 +179,40 @@ class MainController(MainWindow):
 
     def remove_func(self, x, y, z):
         if self.tree_model:
-
-            found = False
-            for node in self.tree_controller.nodes:
-                if node.pos_x == x and node.pos_y == y and node.pos_z == z:
-                    found = True
-                    break
-
-            if found:
-                try:
+            if self.tree_controller.nodes.__len__() == 1:
+                self.tree_model = None
+                self.tree_controller = TreeController(self.tree_model)
+                self.setCentralWidget(self.tree_controller)
+            else:
+                found = False
+                for node in self.tree_controller.nodes:
+                    if node.pos_x == x and node.pos_y == y and node.pos_z == z:
+                        found = True
+                        break
+                if found:
                     self.target = None
                     self.get_object(self.tree_model, Pos(x, y, z))
                     self.tree_model = self.delete(self.target)
                     self.target = None
-                    # TODO:
-                except Exception as e:
-                    print(e)
-                tree = copy.deepcopy(self.tree_model)
-                self.tree_controller = TreeController(tree)
-                self.setCentralWidget(self.tree_controller)
-                resultBox = QMessageBox()
-                resultBox.setWindowTitle("Repair Shop Removed!")
-                resultBox.setWindowIcon(QIcon("../media/icons/tree.png"))
-                resultBox.setIcon(QMessageBox.Icon.Information)
-                resultBox.setFont(QFont("Arial", 11))
-                resultBox.setText("Repair Shop in ({} , {} , {}) has been removed.".format(x, y, z))
-                resultBox.exec()
-            else:
-                resultBox = QMessageBox()
-                resultBox.setWindowTitle("Repair Shop Not Found!")
-                resultBox.setWindowIcon(QIcon("../media/icons/tree.png"))
-                resultBox.setIcon(QMessageBox.Icon.Warning)
-                resultBox.setFont(QFont("Arial", 11))
-                resultBox.setText(
-                    "No Repair Shop found in ({} , {} , {}) .".format(x, y, z))
-                resultBox.exec()
+                    tree = copy.deepcopy(self.tree_model)
+                    self.tree_controller = TreeController(tree)
+                    self.setCentralWidget(self.tree_controller)
+                    resultBox = QMessageBox()
+                    resultBox.setWindowTitle("Repair Shop Removed!")
+                    resultBox.setWindowIcon(QIcon("../media/icons/tree.png"))
+                    resultBox.setIcon(QMessageBox.Icon.Information)
+                    resultBox.setFont(QFont("Arial", 11))
+                    resultBox.setText("Repair Shop in ({} , {} , {}) has been removed.".format(x, y, z))
+                    resultBox.exec()
+                else:
+                    resultBox = QMessageBox()
+                    resultBox.setWindowTitle("Repair Shop Not Found!")
+                    resultBox.setWindowIcon(QIcon("../media/icons/tree.png"))
+                    resultBox.setIcon(QMessageBox.Icon.Warning)
+                    resultBox.setFont(QFont("Arial", 11))
+                    resultBox.setText(
+                        "No Repair Shop found in ({} , {} , {}) .".format(x, y, z))
+                    resultBox.exec()
         else:
             resultBox = QMessageBox()
             resultBox.setWindowTitle("Can Not Remove A Repair Shop Without A Tree!")

@@ -31,14 +31,14 @@ class TreeView(QWidget):
             y = node.y() + node.height()
             x_child = x + int(node.r / 2)
             y_child = y + 30
-            self.lines.append((x - 10, y + 10, x_child, y_child - 1))
+            self.lines.append((x - 15, y + 5, x_child - 15, y_child - 1))
             self.add_node(tree.right, x_child, y_child, int(r / 2))
         if tree.has("left"):
             x = node.x() + int(node.width() / 2)
             y = node.y() + node.height()
             x_child = x - int(r / 2)
             y_child = y + 30
-            self.lines.append((x - 10, y + 10, x_child - 10, y_child - 1))
+            self.lines.append((x - 15, y + 5, x_child - 15, y_child - 1))
             self.add_node(tree.left, x_child, y_child, int(r / 2))
 
     def paintEvent(self, event):

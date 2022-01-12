@@ -14,7 +14,7 @@ class NodeView(QLabel):
         self.setStyleSheet("""
             background-color: #1A7BA9;
             border-radius: 10px;
-            padding: 7px;
-            font-size: 18px;
+            padding: 5px;
+            font-size: 16px;
         """)
         self.move(x - int(self.width() / 2), y)

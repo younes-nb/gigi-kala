@@ -1,6 +1,6 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QPainter, QPen
-from PyQt6.QtWidgets import QWidget
+from PyQt6.QtGui import QPainter, QPen, QFont
+from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout
 
 from src.view.node_view import NodeView
 
@@ -16,6 +16,12 @@ class TreeView(QWidget):
             cord_y = 20
             r = cord_x
             self.add_node(tree, cord_x, cord_y, r)
+        else:
+            self.layout = QVBoxLayout(self)
+            self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            massage = QLabel("Please Add a Tree by options > Add Tree or using Alt+Ins")
+            massage.setFont(QFont("Arial", 13))
+            self.layout.addWidget(massage)
 
     def add_node(self, tree, cord_x, cord_y, r):
         node = NodeView(self, tree.data.x, tree.data.y, tree.data.z, cord_x, cord_y, r)

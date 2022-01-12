@@ -1,5 +1,3 @@
-from PyQt6.QtCore import Qt
-
 from src.view.search_view import SearchView
 
 

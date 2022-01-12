@@ -8,7 +8,7 @@ from src.view.inputs_view import InputsView
 class AddRepairShopView(QWidget):
     def __init__(self):
         super(AddRepairShopView, self).__init__()
-        self.setWindowIcon(QIcon("../media/icons/tree_controller.png"))
+        self.setWindowIcon(QIcon("../media/icons/tree.png"))
         self.setWindowTitle("Add Repair Shop")
         self.setFixedSize(340, 426)
         self.layout = QVBoxLayout(self)

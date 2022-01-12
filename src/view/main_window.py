@@ -25,6 +25,10 @@ class MainWindow(QMainWindow):
         self.search.setShortcut("Ctrl+F")
         options.addAction(self.search)
 
+        self.remove = QAction(QIcon("../media/icons/remove.png"), "Remove")
+        self.remove.setShortcut("Delete")
+        options.addAction(self.remove)
+
         self.close_app = QAction(QIcon("../media/icons/close.png"), "Close")
         self.close_app.setShortcut("Ctrl+W")
         options.addAction(self.close_app)

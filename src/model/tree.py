@@ -197,10 +197,10 @@ def insert(tree: Tree, node: Pos):
                 insert(tree.right.right.right, node)
 
 
-def clean(tree: Tree, node: Pos, ori: Pos = None, base='x'):
+def clean(tree: Tree, node: Pos, ori: Pos = None, base='pos_x'):
     if ori is None:
         ori = node
-    if base == 'x':
+    if base == 'pos_x':
         x = tree.data.x
         base = 'y'
     elif base == 'y':
@@ -208,7 +208,7 @@ def clean(tree: Tree, node: Pos, ori: Pos = None, base='x'):
         base = 'z'
     else:
         x = tree.data.z
-        base = 'x'
+        base = 'pos_x'
     distances[tree.data] = distance(tree.data, ori)
     if node.x < x:
         if tree.has(l):
@@ -224,8 +224,8 @@ def clean(tree: Tree, node: Pos, ori: Pos = None, base='x'):
             savageClean(tree.left, Pos(node.y, node.z, node.x), ori, base)
 
 
-def savageClean(tree: Tree, node: Pos, ori: Pos = None, base='x'):
-    if base == 'x':
+def savageClean(tree: Tree, node: Pos, ori: Pos = None, base='pos_x'):
+    if base == 'pos_x':
         x = tree.data.x
         base = 'y'
     elif base == 'y':
@@ -233,7 +233,7 @@ def savageClean(tree: Tree, node: Pos, ori: Pos = None, base='x'):
         base = 'z'
     else:
         x = tree.data.z
-        base = 'x'
+        base = 'pos_x'
     distances[tree.data] = distance(tree.data, ori)
     if node.x < x:
         if tree.has(l):
@@ -249,8 +249,8 @@ def savageClean(tree: Tree, node: Pos, ori: Pos = None, base='x'):
             killerClean(tree.left, Pos(node.y, node.z, node.x), ori, base)
 
 
-def killerClean(tree: Tree, node: Pos, ori: Pos = None, base='x'):
-    if base == 'x':
+def killerClean(tree: Tree, node: Pos, ori: Pos = None, base='pos_x'):
+    if base == 'pos_x':
         x = tree.data.x
         base = 'y'
     elif base == 'y':
@@ -258,7 +258,7 @@ def killerClean(tree: Tree, node: Pos, ori: Pos = None, base='x'):
         base = 'z'
     else:
         x = tree.data.z
-        base = 'x'
+        base = 'pos_x'
     distances[tree.data] = distance(tree.data, ori)
     if node.x < x:
         if tree.has(l):
@@ -274,5 +274,4 @@ def nearest(tree: Tree, node: Pos):
     tree.clean(node)
     point = min(distances, key=distances.get)
     distance = distances[min(distances, key=distances.get)]
-    return ((point.x, point.y, point.z), distance)
-
+    return (point.x, point.y, point.z), distance
